@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<UrlDbContext>(options => 
     options.UseInMemoryDatabase("UrlMemoryDb")
 );
+builder.Services.AddScoped<UrlOwnershipRequiredAttribute>();
 
 var app = builder.Build();
 
