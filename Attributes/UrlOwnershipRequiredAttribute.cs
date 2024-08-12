@@ -24,8 +24,6 @@ public class UrlOwnershipRequiredAttribute(UrlDbContext urlDbContext) : ActionFi
             context.Result = new BadRequestObjectResult("Owner doesn't own url");
             return;
         }
-
-        context.HttpContext.Items["Pair"] = pair;
         await next();
     }
 }

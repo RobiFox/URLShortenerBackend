@@ -43,8 +43,9 @@ public class UrlController(UrlDbContext context) : ControllerBase {
     [HttpDelete]
     [ServiceFilter(typeof(UrlOwnershipRequiredAttribute))]
     public IActionResult Delete(string id, string owner) {
-        if (HttpContext.Items["UrlPair"] is not IdUrlPair pair) {
-            return NotFound("URL Pair not found");
+        IdUrlPair? pair = context.UrlPairs.FirstOrDefault(e => e.Id == id);
+        if (pair == null) {
+            return NotFound($"No URL with {id}");
         }
         context.UrlPairs.Remove(pair);
         context.SaveChanges();
