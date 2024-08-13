@@ -11,21 +11,19 @@ public class UrlController(UrlDbContext context) : ControllerBase {
         if (pair == null) {
             return NotFound($"No URL with {id}");
         }
-        return Ok(pair);
+        return Redirect(pair.Url);
     }
     
     [HttpGet]
-    public IActionResult Get() {
-        return Ok(context.UrlPairs.ToList());
-    }
-    
-    [HttpGet]
-    public IActionResult GetOwner(string owner) {
+    public IActionResult GetOwner(string? owner) {
+        if (owner == null) {
+            return Ok(context.UrlPairs.ToList());
+        }
         return Ok(context.UrlPairs.Where(pair => pair.UploaderId == owner).Select(pair => new IdUrlPairDto(pair)).ToList());
     }
     
     [HttpPost]
-    public IActionResult Post(string url, string owner) {
+    public IActionResult Post([FromQuery] string url, [FromQuery] string owner) {
         string id;
         do {
             id = Guid.NewGuid().ToString("N")[..8];

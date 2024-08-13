@@ -13,12 +13,13 @@ builder.Services.AddDbContext<UrlDbContext>(options =>
     options.UseInMemoryDatabase("UrlMemoryDb")
 );
 builder.Services.AddScoped<UrlOwnershipRequiredAttribute>();
-
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors(a => a.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
     app.UseSwagger();
     app.UseSwaggerUI();
 }
