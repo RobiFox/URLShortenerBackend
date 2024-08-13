@@ -40,13 +40,13 @@ public class UrlController(UrlDbContext context) : ControllerBase {
 
     [HttpDelete]
     [ServiceFilter(typeof(UrlOwnershipRequiredAttribute))]
-    public IActionResult Delete(string id, string owner) {
+    public IActionResult Delete([FromQuery] string id, [FromQuery] string owner) {
         IdUrlPair? pair = context.UrlPairs.FirstOrDefault(e => e.Id == id);
         if (pair == null) {
             return NotFound($"No URL with {id}");
         }
         context.UrlPairs.Remove(pair);
         context.SaveChanges();
-        return Ok(owner);
+        return Ok();
     }
 }
